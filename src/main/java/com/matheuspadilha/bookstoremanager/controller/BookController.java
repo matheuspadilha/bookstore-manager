@@ -2,12 +2,10 @@ package com.matheuspadilha.bookstoremanager.controller;
 
 import com.matheuspadilha.bookstoremanager.dto.BookDTO;
 import com.matheuspadilha.bookstoremanager.dto.MessageResponseDTO;
+import com.matheuspadilha.bookstoremanager.exception.BookNotFoundException;
 import com.matheuspadilha.bookstoremanager.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -15,7 +13,7 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/book")
 public class BookController {
 
-    private BookService bookService;
+    private final BookService bookService;
 
     @Autowired
     public BookController(BookService bookService) {
@@ -27,4 +25,8 @@ public class BookController {
         return bookService.create(bookDTO);
     }
 
+    @GetMapping("/{id}")
+    public BookDTO findById(@PathVariable Long id) throws BookNotFoundException {
+        return bookService.findById(id);
+    }
 }
